@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server-Sent Events Example</title>
+</head>
+<body>
+<h1>Server Sent Events</h1>
+<div id="events"></div>
+
+<script>
+    // Create a new EventSource that connects to the /events endpoint
+    const eventSource = new EventSource("http://localhost:8080/events");
+
+    // Listen for incoming events
+    eventSource.onmessage = function(event) {
+        const eventData = event.data;
+        const eventsDiv = document.getElementById("events");
+        const newEvent = document.createElement("p");
+        newEvent.textContent = `Received at ${new Date(eventData)}: ${eventData}`;
+        eventsDiv.appendChild(newEvent);
+    };
+
+    // Handle errors
+    eventSource.onerror = function(error) {
+        console.error("Error occurred:", error);
+    };
+</script>
+</body>
+</html>
